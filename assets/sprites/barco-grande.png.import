@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cs4x3iyoyfiab"
-path="res://.godot/imported/sardinha.png-0bd13a732d32733144d033ab9f2b0845.ctex"
+uid="uid://bbh4ryk1mi3u6"
+path="res://.godot/imported/barco-grande.png-25d84199946c4ffa98a410cf29c0b1a3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/guilherme-tutorial/sardinha.png"
-dest_files=["res://.godot/imported/sardinha.png-0bd13a732d32733144d033ab9f2b0845.ctex"]
+source_file="res://assets/sprites/barco-grande.png"
+dest_files=["res://.godot/imported/barco-grande.png-25d84199946c4ffa98a410cf29c0b1a3.ctex"]
 
 [params]
 

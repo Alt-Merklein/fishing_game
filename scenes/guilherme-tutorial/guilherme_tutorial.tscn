@@ -1,8 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://cfd2yhkg7texu"]
+[gd_scene load_steps=8 format=3 uid="uid://cfd2yhkg7texu"]
 
-[ext_resource type="PackedScene" uid="uid://cdnqtebfupj62" path="res://scenes/guilherme-tutorial/knight_example.tscn" id="1_pfujd"]
+[ext_resource type="PackedScene" uid="uid://cdnqtebfupj62" path="res://scenes/guilherme-tutorial/boat.tscn" id="1_pfujd"]
 [ext_resource type="Texture2D" uid="uid://bfyc7ntifu2f7" path="res://assets/brackeys_platformer_assets/sprites/world_tileset.png" id="2_1rrvb"]
-[ext_resource type="PackedScene" uid="uid://cknf6hiyderqr" path="res://scenes/guilherme-tutorial/fishing_rod.tscn" id="3_ettdi"]
 [ext_resource type="PackedScene" uid="uid://y634pf3ssgv3" path="res://scenes/guilherme-tutorial/fish_basic.tscn" id="4_4siou"]
 [ext_resource type="Script" path="res://scripts/guilherme-tutorial/FishSpawner.gd" id="5_rswtc"]
 
@@ -148,8 +147,6 @@ sources/0 = SubResource("TileSetAtlasSource_pygva")
 position = Vector2(0, 103)
 zoom = Vector2(2, 2)
 
-[node name="knight-example" parent="." instance=ExtResource("1_pfujd")]
-
 [node name="Water collider" type="StaticBody2D" parent="."]
 position = Vector2(-2, -8)
 
@@ -169,17 +166,11 @@ offset_right = 420.0
 offset_bottom = 443.0
 color = Color(0.752941, 1, 1, 1)
 
-[node name="FishingRod" parent="." instance=ExtResource("3_ettdi")]
-radius = 5.0
-bottom_y = 240.0
-spawn_offset_y = 8.0
-player_path = NodePath("../knight-example")
-
-[node name="Fishes" type="Node2D" parent="."]
-
 [node name="FishSpawner" type="Node2D" parent="."]
 position = Vector2(-1, 131)
 script = ExtResource("5_rswtc")
 fish_scene = ExtResource("4_4siou")
 count = 15
 area_size = Vector2(300, 200)
+
+[node name="boat" parent="." instance=ExtResource("1_pfujd")]
