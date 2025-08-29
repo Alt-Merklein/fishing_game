@@ -1,53 +1,64 @@
 extends Node2D
 
-@export var animation_name: String = "swim"
 @export var bite_offset: Vector2 = Vector2(0, 0)
-
-# Optional per-fish variation
-@export var desync_phase: bool = true
-@export var random_speed_range := Vector2(0.95, 1.10) # 1.0 = normal speed
-@export var random_facing: bool = true                # random flip_h at start
+@export var speed: float = 120.0
+@export var amplitude: float = 200.0
+@export var start_moves_right: bool = true
+@export var random_speed_range := Vector2(0.95, 1.10)
+@export var head_offset_right: Vector2 = Vector2(18, 0)
+@export var head_offset_left: Vector2 = Vector2(-18, 0)
+@export var draw_hitbox: bool = false
 
 const ROD_GROUP := "fishing_rod"
 
-@onready var anim: AnimationPlayer = $AnimationPlayer
-@onready var sprite: Sprite2D = $Sprite2D
-@onready var hitbox: Area2D = $Sprite2D/Hitbox
+@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var hitbox: Area2D = $AnimatedSprite2D/Hitbox
 
 var biting := false
 var target_rod: Node2D = null
 var rng := RandomNumberGenerator.new()
+var dir := 1
+var start_x := 0.0
+var speed_scale := 1.0
 
 func _ready():
 	rng.randomize()
-
+	dir = 1 if start_moves_right else -1
+	speed_scale = rng.randf_range(random_speed_range.x, random_speed_range.y)
+	start_x = global_position.x
+	var phase_x := rng.randf_range(-amplitude, amplitude)
+	global_position.x = start_x + phase_x
+	_apply_facing()
 	if hitbox:
 		hitbox.area_entered.connect(_on_hitbox_area_entered)
+		_update_head_hitbox_offset()
 
-	if anim and anim.has_animation(animation_name):
-		# Play first, then seek to a random phase so it's visible immediately
-		anim.play(animation_name)
-
-		if desync_phase:
-			var a := anim.get_animation(animation_name)
-			if a:
-				var t := rng.randf_range(0.0, a.length)
-				anim.seek(t, true)  # 'true' forces immediate update
-
-		# Slight per-fish speed variance (optional)
-		if random_speed_range.x != 1.0 or random_speed_range.y != 1.0:
-			anim.speed_scale = rng.randf_range(random_speed_range.x, random_speed_range.y)
-
-	# Random initial facing (optional, purely visual; doesn't change swim path)
-	if random_facing and sprite:
-		sprite.flip_h = (rng.randi() & 1) == 0
-
-func _process(_delta: float):
+func _process(delta: float):
 	if biting and is_instance_valid(target_rod):
 		global_position = target_rod.global_position + bite_offset
-		rotation = -PI / 2
-	elif not biting:
+		rotation = +PI / 2
+		return
+	else:
 		rotation = 0
+
+	if amplitude > 0.0:
+		global_position.x += speed * speed_scale * dir * delta
+		var dx := global_position.x - start_x
+		if absf(dx) >= amplitude:
+			global_position.x = start_x + signf(dx) * amplitude
+			dir *= -1
+			_apply_facing()
+			_update_head_hitbox_offset()
+
+	queue_redraw()
+
+func _apply_facing():
+	if sprite:
+		sprite.flip_h = (dir > 0)
+
+func _update_head_hitbox_offset():
+	if hitbox:
+		hitbox.position = head_offset_right if (dir >= 0) else head_offset_left
 
 func _on_hitbox_area_entered(area: Area2D):
 	var maybe_rod := area.get_parent()
@@ -59,11 +70,13 @@ func bite(rod: Node2D):
 	if biting: return
 	target_rod = rod
 	biting = true
-	if anim: anim.stop()
 
 func release():
 	biting = false
 	target_rod = null
 	rotation = 0
-	if anim and anim.has_animation(animation_name):
-		anim.play(animation_name)
+
+func _draw():
+	if draw_hitbox and hitbox:
+		var pos := hitbox.position
+		draw_circle(pos, 6, Color.RED)

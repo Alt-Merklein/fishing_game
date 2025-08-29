@@ -1,113 +1,64 @@
-[gd_scene load_steps=7 format=3 uid="uid://y634pf3ssgv3"]
+[gd_scene load_steps=9 format=3 uid="uid://y634pf3ssgv3"]
 
 [ext_resource type="Script" path="res://scripts/guilherme-tutorial/fish_basic.gd" id="1_fc7ql"]
-[ext_resource type="Texture2D" uid="uid://cxmodtlb64dup" path="res://assets/sprites/sardinha.png" id="2_bc3n0"]
+[ext_resource type="Texture2D" uid="uid://1qjgaiywyyqh" path="res://assets/sprites/peixes.png" id="2_pxr55"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r0tnc"]
+atlas = ExtResource("2_pxr55")
+region = Rect2(0, 14, 32, 12)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7arbc"]
+atlas = ExtResource("2_pxr55")
+region = Rect2(32, 14, 32, 12)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yk8im"]
+atlas = ExtResource("2_pxr55")
+region = Rect2(64, 14, 32, 12)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_41hkf"]
+atlas = ExtResource("2_pxr55")
+region = Rect2(96, 14, 32, 12)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_36fei"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r0tnc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7arbc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yk8im")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_41hkf")
+}],
+"loop": true,
+"name": &"default",
+"speed": 2.0
+}]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_o2pir"]
 radius = 6.0
 
-[sub_resource type="Animation" id="Animation_6hk8p"]
-resource_name = "swim"
-length = 16.0
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 4, 8, 12),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(0, 0), Vector2(100, 0), Vector2(0, 0), Vector2(-100, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:flip_h")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 4, 8, 12),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [true, false, false, true]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Hitbox/CollisionShape2D:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 4, 8, 12),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [Vector2(10, 4), Vector2(-10, 4), Vector2(-10, 4), Vector2(10, 4)]
-}
-
-[sub_resource type="Animation" id="Animation_3258o"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:flip_h")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Hitbox/CollisionShape2D:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-9.51779, 4)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_x2shu"]
-_data = {
-"RESET": SubResource("Animation_3258o"),
-"swim": SubResource("Animation_6hk8p")
-}
-
 [node name="Fish" type="Node2D"]
+z_index = 2
 script = ExtResource("1_fc7ql")
+speed = 40.0
+amplitude = 100.0
+head_offset_right = Vector2(11, 0)
+head_offset_left = Vector2(-11, 0)
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_bc3n0")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_36fei")
+autoplay = "default"
+frame = 2
+frame_progress = 0.326927
 flip_h = true
 
-[node name="Hitbox" type="Area2D" parent="Sprite2D"]
+[node name="Hitbox" type="Area2D" parent="AnimatedSprite2D"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/Hitbox"]
-position = Vector2(-9.51779, 4)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatedSprite2D/Hitbox"]
+position = Vector2(10, 0)
 shape = SubResource("CircleShape2D_o2pir")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-root_node = NodePath("../Sprite2D")
-libraries = {
-"": SubResource("AnimationLibrary_x2shu")
-}
-autoplay = "swim"
