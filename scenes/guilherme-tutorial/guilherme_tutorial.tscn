@@ -177,18 +177,9 @@ player_path = NodePath("../knight-example")
 
 [node name="Fishes" type="Node2D" parent="."]
 
-[node name="Fish" parent="Fishes" instance=ExtResource("4_4siou")]
-position = Vector2(-198, 146)
-
-[node name="Fish2" parent="Fishes" instance=ExtResource("4_4siou")]
-position = Vector2(80, 83)
-
-[node name="Fish3" parent="Fishes" instance=ExtResource("4_4siou")]
-position = Vector2(-64, 253)
-
 [node name="FishSpawner" type="Node2D" parent="."]
 position = Vector2(-1, 131)
 script = ExtResource("5_rswtc")
 fish_scene = ExtResource("4_4siou")
-count = 10
-area_size = Vector2(280, 125)
+count = 15
+area_size = Vector2(300, 200)

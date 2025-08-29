@@ -15,6 +15,10 @@ run/main_scene="res://scenes/guilherme-tutorial/guilherme_tutorial.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
+[display]
+
+window/stretch/mode="viewport"
+
 [input]
 
 fish={
