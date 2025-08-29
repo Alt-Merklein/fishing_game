@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://cknf6hiyderqr"]
+
+[ext_resource type="Script" path="res://scripts/guilherme-tutorial/FishingRod.gd" id="1_yshyt"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0qoas"]
+
+[node name="FishingRod" type="Node2D"]
+z_index = 1
+script = ExtResource("1_yshyt")
+
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("CircleShape2D_0qoas")
